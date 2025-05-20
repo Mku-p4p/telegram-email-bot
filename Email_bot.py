@@ -31,11 +31,13 @@ user_states = {}
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     user_states[user.id] = {"step": "waiting_for_email"}
+    username = user.first_name or user.username or "there"
+
     keyboard = [[InlineKeyboardButton("Provide Email", callback_data="provide_email")]]
     reply_markup = InlineKeyboardMarkup(keyboard)
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
-        text="👑 Congratulations on winning the quiz!\nPlease click below to provide your email so we can send you your free spins!",
+        text=f"🎉 Hi {username}! Congratulations on winning the quiz!\nPlease click below to provide your email so we can send you your free spins!",
         reply_markup=reply_markup
     )
 
