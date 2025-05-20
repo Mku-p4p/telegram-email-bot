@@ -53,14 +53,18 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             chat_id=query.message.chat_id,
             text="✉️ Please enter your email:"
         )
-    elif query.data == "confirm_email":
-        email = user_states[user.id]["email"]
-        nickname = user.username or user.first_name or "unknown"
-        sheet.append_row([nickname, email])
-        await context.bot.send_message(
-            chat_id=query.message.chat_id,
-            text="✅ Your email has been submitted successfully!"
-        )
+   elif query.data == "confirm_email":
+    email = user_states[user.id]["email"]
+    full_name = user.full_name or "unknown"
+    nickname = user.username or "no username"
+    sheet.append_row([full_name, nickname, email])
+
+    await context.bot.send_message(
+        chat_id=query.message.chat_id,
+        text="✅ Your email has been submitted successfully!"
+    )
+    user_states[user.id] = {"step": "done"}
+
         user_states[user.id] = {"step": "done"}
     elif query.data == "cancel_email":
         user_states[user.id] = {"step": "waiting_for_email"}
